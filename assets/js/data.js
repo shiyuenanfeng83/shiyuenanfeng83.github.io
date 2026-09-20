@@ -18,19 +18,21 @@ const SITE = {
  *  icon     封面 emoji
  *  c1/c2    封面渐变色
  *  live     在线体验地址（没有就留空 ""）
+ *  mirror   备用访问地址（可选，没有就留空 ""）
  *  repo     源码或说明地址（没有就留空 ""）
  */
 const PROJECTS = [
   {
     title: "需求挖掘助手 · 成都购房客户洞察",
-    desc: "分步引导摸清客户真实诉求，自动生成需求画像报告与可直接复制的房源筛选条件，数据仅存本机。",
+    desc: "分步引导摸清客户真实诉求，自动生成需求画像报告与可直接复制的房源筛选条件，数据仅存本机。已同步部署到 GitHub Pages 永久域名。",
     tags: ["AI 应用", "提示词工程", "前端开发"],
     date: "2026-09",
     status: "已上线",
     icon: "🏠",
     c1: "#1F6F5C",
     c2: "#3FA98C",
-    live: "http://34d9a47d436f46c3abe278e3f48e4971.codebuddy.cloudstudio.run/",
+    live: "https://shiyuenanfeng83.github.io/home/",
+    mirror: "http://34d9a47d436f46c3abe278e3f48e4971.codebuddy.cloudstudio.run/",
     repo: "",
   },
 ];
