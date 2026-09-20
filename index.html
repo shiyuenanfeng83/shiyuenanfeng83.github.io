@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI 课程学习成果记录站 —— 记录每一次动手实践与作品沉淀。" />
+  <title>AI 学习成果集 · 我的成长记录</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%236C5CE7'/%3E%3Cpath d='M8 21v-7l8-5 8 5v7' stroke='%23FFD166' stroke-width='2.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='16' cy='18' r='2.4' fill='%23fff'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <!-- 顶部导航 -->
+  <header class="nav" id="nav">
+    <div class="container nav__inner">
+      <a class="brand" href="#top">
+        <span class="brand__mark">AI</span>
+        <span class="brand__text">学习成果集</span>
+      </a>
+      <nav class="nav__links">
+        <a href="#works">成果作品</a>
+        <a href="#timeline">学习轨迹</a>
+        <a href="#about">关于我</a>
+      </nav>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换深浅色主题">
+        <span class="theme-toggle__icon">🌙</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero__glow"></div>
+      <div class="container hero__inner">
+        <div class="hero__text">
+          <span class="badge">🎓 AI 课程 · 学习中</span>
+          <h1>把每一个想法<br /><span class="grad">做成能用的东西</span></h1>
+          <p class="hero__desc">
+            这里是我的 AI 学习成果记录站。从提示词设计到完整应用落地，
+            每一步实践、每一次踩坑，都被我沉淀成可运行、可分享的作品。
+          </p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="#works">浏览我的成果</a>
+            <a class="btn btn--ghost" href="#timeline">看看学习轨迹</a>
+          </div>
+          <ul class="stats" id="stats"></ul>
+        </div>
+        <div class="hero__card">
+          <div class="orbit">
+            <div class="orbit__core">AI</div>
+            <span class="orbit__dot orbit__dot--1">Prompt</span>
+            <span class="orbit__dot orbit__dot--2">Web</span>
+            <span class="orbit__dot orbit__dot--3">数据</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 成果作品 -->
+    <section class="section" id="works">
+      <div class="container">
+        <div class="section__head">
+          <h2 class="section__title">我的成果作品</h2>
+          <p class="section__sub">每一个作品，都是一次从 0 到 1 的完整实践。</p>
+        </div>
+        <div class="filters" id="filters"></div>
+        <div class="grid" id="worksGrid"></div>
+        <div class="empty" id="emptyWorks" hidden>暂无该分类的成果～</div>
+      </div>
+    </section>
+
+    <!-- 学习轨迹 -->
+    <section class="section section--alt" id="timeline">
+      <div class="container">
+        <div class="section__head">
+          <h2 class="section__title">学习轨迹</h2>
+          <p class="section__sub">记录我在 AI 课程中走过的每一步。</p>
+        </div>
+        <ol class="timeline" id="timelineList"></ol>
+      </div>
+    </section>
+
+    <!-- 关于我 -->
+    <section class="section" id="about">
+      <div class="container about">
+        <div class="about__main">
+          <h2 class="section__title">关于我</h2>
+          <p>
+            我是一名 AI 课程的学习者，正在系统地把「会用 AI」升级成「做出 AI 应用」。
+            我相信学习最好的证明不是笔记，而是能跑起来、能被别人使用的作品。
+          </p>
+          <p>
+            未来我会在这里持续更新：提示词工程、AI 应用开发、数据处理与自动化工作流等方向的实践成果。
+          </p>
+          <div class="tags" id="skillTags"></div>
+        </div>
+        <aside class="about__side">
+          <div class="panel">
+            <h3>下一步计划</h3>
+            <ul class="plan" id="planList"></ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>© <span id="year"></span> AI 学习成果集 · 持续更新中</p>
+      <p class="footer__tip">用 AI 学习，用作品说话。</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
