@@ -43,6 +43,9 @@ function cardHTML(p, index) {
   const repoBtn = p.repo
     ? `<a class="link-btn link-btn--ghost" href="${p.repo}" target="_blank" rel="noopener">📄 查看源码</a>`
     : "";
+  const mirrorBtn = p.mirror
+    ? `<a class="link-btn link-btn--ghost" href="${p.mirror}" target="_blank" rel="noopener">🌐 备用地址</a>`
+    : "";
   return `
     <article class="card reveal">
       <div class="card__cover" style="--c1:${p.c1};--c2:${p.c2}">
@@ -55,7 +58,7 @@ function cardHTML(p, index) {
         <p class="card__desc">${p.desc}</p>
         <div class="card__tags">${p.tags.map((t) => `<span class="tag">${t}</span>`).join("")}</div>
         <p class="card__meta">完成于 ${p.date}</p>
-        <div class="card__links">${liveBtn}${repoBtn}</div>
+        <div class="card__links">${liveBtn}${mirrorBtn}${repoBtn}</div>
       </div>
     </article>`;
 }
