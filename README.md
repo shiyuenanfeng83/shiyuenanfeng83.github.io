@@ -61,6 +61,24 @@ python -m http.server 8080
 
 ### GitHub Pages（免费，最推荐）
 
+#### 方式 A：不装 Git，用 token 一键部署（本机已在用）
+
+当前站点仓库：`shiyuenanfeng83.github.io`，线上地址：**https://shiyuenanfeng83.github.io/**
+
+在本项目根目录执行（token 需勾选 `repo` 权限，在 https://github.com/settings/tokens 生成）：
+
+```powershell
+$env:GITHUB_TOKEN = '你的token'
+node deploy/github-deploy.js
+```
+
+脚本会自动完成：创建/复用仓库 → 上传全部站点文件（自动跳过 `deploy/` 等目录）→ 开启 Pages → 等待构建并打印网址。
+**以后每次改完 `data/posts.json` 或其他文件，再跑一次这条命令就更新到线上了。**
+
+> `deploy/` 只在本机使用，不会被上传。部署完成后建议到 GitHub 设置里删除该 token。
+
+#### 方式 B：Git 命令行
+
 1. 登录 GitHub → 右上角 **New repository**，仓库名填 `用户名.github.io`（这样域名就是 `https://用户名.github.io`；如果叫别的名字，访问路径会是 `https://用户名.github.io/仓库名/`，同样可用）。
 2. 把本项目所有文件推送上去：
 
