@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>站长后台 · 内容管理</title>
+  <meta name="robots" content="noindex, nofollow"> <!-- 告诉搜索引擎不要收录后台 -->
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <!-- 后台页面在二级目录里，基础路径是上一级 -->
+  <script>window.__BLOG_BASE__ = '../';</script>
+</head>
+
+<body>
+  <!-- ===================================================================
+       登录视图：只有输入正确密码才会切换到下面的编辑面板
+       =================================================================== -->
+  <div class="login-wrap" id="loginView">
+    <div class="login-card">
+      <h1>站长后台</h1>
+      <p class="login-tip">请输入管理密码后进入编辑模式</p>
+      <form id="loginForm" autocomplete="off">
+        <div class="field">
+          <input type="password" id="passwordInput" placeholder="管理密码" autofocus>
+        </div>
+        <p class="login-error" id="loginError"></p>
+        <button class="btn btn-primary" style="width:100%" type="submit">进入编辑</button>
+      </form>
+      <p class="login-tip" style="margin:14px 0 0;font-size:12px">
+        密码忘记处理办法见 README 第七节
+      </p>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       编辑视图
+       =================================================================== -->
+  <div id="adminView" class="hidden">
+    <!-- 顶部操作栏 -->
+    <header class="admin-header">
+      <div class="head-inner">
+        <div class="admin-title">
+          内容管理
+          <small id="postCount">共 0 篇</small>
+        </div>
+        <div class="head-actions">
+          <button class="btn btn-primary btn-sm" id="btnNew">＋ 新建文章</button>
+          <button class="btn btn-sm" id="btnExport">导出 JSON 备份</button>
+          <button class="btn btn-sm" id="btnExportJs">导出 posts.js</button>
+          <button class="btn btn-sm" id="btnImport">导入 JSON</button>
+          <button class="btn btn-sm" id="btnSync">同步仓库数据</button>
+          <button class="btn btn-sm" id="btnSite">站点设置</button>
+          <button class="btn btn-sm" id="btnPwd">修改密码</button>
+          <a class="btn btn-sm" href="../" target="_blank">查看前台</a>
+          <button class="btn btn-sm btn-danger" id="btnLogout">退出</button>
+        </div>
+        <!-- 隐藏的文件输入：导入 JSON 与上传图片共用这类控件 -->
+        <input type="file" id="importFile" accept="application/json,.json" class="hidden">
+        <input type="file" id="imageFile" accept="image/*" class="hidden" multiple>
+        <input type="file" id="avatarFile" accept="image/*" class="hidden">
+      </div>
+    </header>
+
+    <div class="admin-body">
+      <!-- ---------- 左侧：文章列表 ---------- -->
+      <aside class="panel post-list-panel">
+        <h3>全部内容</h3>
+        <div id="postList"></div>
+      </aside>
+
+      <!-- ---------- 右侧：文章编辑器 ---------- -->
+      <section class="panel editor">
+        <!-- 基础信息 -->
+        <div class="form-row">
+          <div class="field">
+            <label>文章标题 *</label>
+            <input type="text" id="titleInput" placeholder="给文章起个标题">
+          </div>
+          <div class="field" style="max-width:190px">
+            <label>发布日期 *（可自定义，支持定时发布：填未来日期前台暂不显示）</label>
+            <input type="date" id="dateInput">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>标签（多个用英文逗号分隔，用于前台分类）</label>
+            <input type="text" id="tagsInput" placeholder="例如：技术,随笔">
+          </div>
+          <div class="field">
+            <label>摘要（留空自动取正文前 100 字）</label>
+            <input type="text" id="summaryInput" placeholder="一句话简介">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>封面图（填图片地址，或点右侧按钮上传本地图片）</label>
+            <div style="display:flex;gap:8px">
+              <input type="text" id="coverInput" placeholder="https://… 或留空">
+              <button class="btn btn-sm" type="button" id="btnCoverUpload">上传</button>
+            </div>
+            <img id="coverPreview" class="cover-preview hidden" alt="封面预览">
+          </div>
+        </div>
+
+        <!-- 正文编辑 / 预览切换 + 常用插入工具 -->
+        <div class="editor-tabs">
+          <button class="tab-btn active" data-tab="write" type="button">编写</button>
+          <button class="tab-btn" data-tab="preview" type="button">预览</button>
+          <span style="flex:1"></span>
+          <button class="btn btn-sm" type="button" id="btnImage">插入图片</button>
+          <button class="btn btn-sm" type="button" id="btnCode">插入代码</button>
+          <button class="btn btn-sm" type="button" id="btnLink">插入链接</button>
+        </div>
+
+        <!-- Markdown 正文输入框 -->
+        <textarea id="contentInput" placeholder="在这里用 Markdown 写正文…"></textarea>
+
+        <!-- 预览区（Markdown 渲染结果） -->
+        <div id="previewBox" class="preview-box markdown-body hidden"></div>
+
+        <!-- 保存 / 删除 -->
+        <div class="form-row" style="justify-content:flex-end">
+          <button class="btn btn-danger" type="button" id="btnDelete">删除本文</button>
+          <button class="btn btn-primary" type="button" id="btnSave">保存文章</button>
+        </div>
+        <p style="margin:0;font-size:12.5px;color:var(--color-text-weak)">
+          提示：内容先保存在本浏览器（localStorage），前台会立即生效；
+          正式发布请点顶部【导出 JSON 备份】，再把文件覆盖到仓库的 <code>data/posts.json</code> 并推送。
+        </p>
+      </section>
+    </div>
+
+    <!-- ---------- 站点设置面板（点击顶部按钮展开） ---------- -->
+    <div class="container">
+      <section class="panel site-editor hidden" id="sitePanel">
+        <h3 style="font-size:15px;color:var(--color-text)">站点设置（前台首页的标题与简介）</h3>
+        <div class="form-row">
+          <div class="field"><label>站点标题</label><input type="text" id="siteTitle"></div>
+          <div class="field"><label>一句话标语</label><input type="text" id="siteTagline"></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label>个人简介（可换行）</label><textarea id="siteBio" style="min-height:90px"></textarea></div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>头像图片地址（可上传）</label>
+            <div style="display:flex;gap:8px">
+              <input type="text" id="siteAvatar">
+              <button class="btn btn-sm" type="button" id="btnAvatarUpload">上传</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>友情链接（JSON 数组格式）</label>
+            <textarea id="siteLinks" style="min-height:90px;font-family:var(--font-mono)"
+              placeholder='[{"name":"GitHub","url":"https://github.com/xxx"}]'></textarea>
+          </div>
+        </div>
+        <div class="form-row" style="justify-content:flex-end">
+          <button class="btn btn-primary btn-sm" type="button" id="btnSaveSite">保存站点设置</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- 操作结果轻提示 -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ===================== 脚本 ===================== -->
+  <script src="../data/posts.js"></script>
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/sha256.js"></script>
+  <script src="../assets/js/markdown.js"></script>
+  <script src="../assets/js/store.js"></script>
+  <script src="../assets/js/admin.js"></script>
+</body>
+</html>
