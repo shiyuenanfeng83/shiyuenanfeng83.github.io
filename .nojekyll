@@ -1,0 +1,2 @@
+# 让 GitHub Pages 不要把本站资源交给 Jekyll 处理
+# 没有这个文件，GitHub Pages 可能忽略部分静态资源，建议保留
